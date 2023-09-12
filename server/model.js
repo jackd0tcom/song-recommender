@@ -22,11 +22,11 @@ User.init(
     },
     fname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     lname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     userImg: {
       type: DataTypes.STRING,
