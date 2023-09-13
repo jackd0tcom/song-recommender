@@ -136,14 +136,10 @@ export default {
   },
 
   checkUser: async (req, res) => {
-    // purpose of this! is to check to see if someone is logged in, and get their info
-    // check if req.session.user is truthy, send back req.session.user with status 200
-    // else send back 400 status with no user on the session
-    try {
-      console.log("checkUser");
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(500).send("somthing broke");
+    if (req.session.user) {
+      res.status(200).send(req.session.user);
+    } else {
+      res.status(400).send("There is no user on the session");
     }
   },
   logout: async (req, res) => {
