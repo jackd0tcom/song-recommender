@@ -50,29 +50,18 @@ export default {
 
         let artistIds = "";
         const artistStrings = artists.split(", ");
-        spotifyApi.searchArtists(`${artistStrings[0]}`, { limit: 1 }).then(
-          function (data) {
-            console.log(data.body.artists.items[0].id);
-          },
-          function (err) {
-            console.log(err);
-          }
-        );
 
-        // const IdArray = artistStrings.map((art) => {
-        //   spotifyApi.searchArtists(`${art}`).then(
-        //     function (data) {
-        //       console.log(data.body);
-        //     },
-        //     function (err) {
-        //       console.log(err);
-        //     }
-        //   );
-        // });
-
-        // ** Genres handling **
-        // example input : "psych rock, pop, rap, hip hop"
-        // just need to push that string to the table
+        await spotifyApi
+          .searchArtists(`${artistStrings[0]}`, { limit: 1 })
+          .then(
+            function (data) {
+              const Id = data.body.artists.items[0].id;
+              artistIds += Id;
+            },
+            function (err) {
+              console.log(err);
+            }
+          );
 
         const newUser = await User.create({
           username,
@@ -81,17 +70,22 @@ export default {
           lname,
         });
 
-        // const newUserLikes = await Likes.create({
-        //   userId: newUser.userId,
-        //   artists: "",
-        //   genres,
-        // });
+        console.log("test");
+        console.log(artistIds);
+
+        const newUserLikes = await Likes.create({
+          artistIds: artistIds,
+          genres,
+        });
+
+        newUserLikes.setUser(newUser.userId);
 
         req.session.user = {
           userId: newUser.userId,
           username: newUser.username,
-          //   artists: newUserLikes.artists,
-          //   genres: newUserLikes.genres,
+          artists: newUserLikes.artistIds,
+          genres: newUserLikes.genres,
+          likesTableUserId: newUserLikes.userId,
         };
 
         res.status(200).send(req.session.user);
@@ -101,7 +95,15 @@ export default {
       res.sendStatus(500);
     }
   },
+
   login: async (req, res) => {
+    // get user info from req.body
+    // check to make sure there IS a found user
+    // if there is no user found, send back status of 400 with an error message for the user
+    // if user is found, use bcrypt.compareSync(), and pass in the new password from req.body, as well as the foundUser's password from the db
+    // if the passwords match up, send the user info to the session and send status of 200 with the req.session.user
+    // if the passwords don't match up, send back 401 status with an error message
+
     try {
       console.log("login");
     } catch (err) {
@@ -109,7 +111,11 @@ export default {
       res.sendStatus(500).send("somthing broke");
     }
   },
+
   checkUser: async (req, res) => {
+    // purpose of this! is to check to see if someone is logged in, and get their info
+    // check if req.session.user is truthy, send back req.session.user with status 200
+    // else send back 400 status with no user on the session
     try {
       console.log("checkUser");
     } catch (err) {
@@ -118,11 +124,7 @@ export default {
     }
   },
   logout: async (req, res) => {
-    try {
-      console.log("logout");
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(500).send("somthing broke");
-    }
+    req.session.destroy();
+    res.status(200).send("there is no user on the session boi");
   },
 };
