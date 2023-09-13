@@ -42,9 +42,13 @@ User.init(
 class Likes extends Model {}
 Likes.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     artistIds: {
       type: DataTypes.STRING,
-      primaryKey: true,
     },
     genres: {
       type: DataTypes.STRING,

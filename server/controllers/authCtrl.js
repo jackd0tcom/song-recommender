@@ -48,20 +48,23 @@ export default {
         // add returned artistID to empty string
         // add said string to likes table
 
-        let artistIds = "";
+        let artistIdString = "";
         const artistStrings = artists.split(", ");
 
-        await spotifyApi
-          .searchArtists(`${artistStrings[0]}`, { limit: 1 })
-          .then(
+        for (let artistName of artistStrings) {
+          await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
             function (data) {
               const Id = data.body.artists.items[0].id;
-              artistIds += Id;
+              artistIdString += Id + ",";
             },
             function (err) {
               console.log(err);
             }
           );
+        }
+        const artistIds = artistIdString.slice(0, -1);
+
+        // Inserting into DB
 
         const newUser = await User.create({
           username,
@@ -69,9 +72,6 @@ export default {
           fname,
           lname,
         });
-
-        console.log("test");
-        console.log(artistIds);
 
         const newUserLikes = await Likes.create({
           artistIds: artistIds,
