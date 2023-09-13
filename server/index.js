@@ -4,7 +4,7 @@ import session from "express-session";
 import songCtrl from "./controllers/songCtrl.js";
 import authCtrl from "./controllers/authCtrl.js";
 const { register, login, checkUser, logout } = authCtrl;
-const { getSong } = songCtrl;
+const { getSong, getAnonSong } = songCtrl;
 import SpotifyWebApi from "spotify-web-api-node";
 
 const spotifyApi = new SpotifyWebApi({
@@ -51,7 +51,7 @@ app.get("/checkUser", checkUser);
 app.delete("/logout", logout);
 
 app.post("/getSong", getSong);
-app.get("/getAnonSong");
+app.post("/getAnonSong", getAnonSong);
 app.put("/updateUser");
 
 ViteExpress.listen(app, PORT, () => console.log(`${PORT} chance baby`));
