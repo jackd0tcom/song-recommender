@@ -1,35 +1,9 @@
 import { User, Likes } from "../model.js";
 import bcrypt from "bcryptjs";
 import { spotifyApi } from "../index.js";
-// import SpotifyWebApi from "spotify-web-api-node";
-
-// const spotifyApi = new SpotifyWebApi({
-//   clientId: "d4612a7c82ee47f9bdc444dc9e6144d7",
-//   clientSecret: "53ca941dff05453c8d1d5a9305131ecc",
-// });
-
-// spotifyApi.clientCredentialsGrant().then(
-//   function (data) {
-//     console.log("The access token expires in " + data.body["expires_in"]);
-//     console.log("The access token is " + data.body["access_token"]);
-
-//     spotifyApi.setAccessToken(data.body["access_token"]);
-//   },
-//   function (err) {
-//     console.log(
-//       "Something went wrong when retrieving an access token",
-//       err.message
-//     );
-//   }
-// );
 
 export default {
-  // controller functions
   register: async (req, res) => {
-    // need to get access to artists and genres
-    // need to seperate them out somehow
-    // need to make a spotify api request to get artistIds, and add those returned IDs to the likes table
-
     try {
       const { username, password, fname, lname, artists, genres } = req.body;
 
@@ -64,8 +38,6 @@ export default {
           );
         }
         const artistIds = artistIdString.slice(0, -1);
-
-        // Inserting into DB
 
         const newUser = await User.create({
           username,
@@ -146,5 +118,40 @@ export default {
   logout: async (req, res) => {
     req.session.destroy();
     res.status(200).send("there is no user on the session boi");
+  },
+  updateUser: async (req, res) => {
+    console.log("updateUser");
+    if (req.session.user) {
+      const { artists, genres } = req.body;
+      const { userId } = req.session.user;
+      const currentUserLikes = await Likes.findOne({ userId });
+
+      let artistIdString = "";
+      const artistStrings = artists.split(", ");
+
+      for (let artistName of artistStrings) {
+        await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
+          function (data) {
+            const Id = data.body.artists.items[0].id;
+            artistIdString += Id + ",";
+          },
+          function (err) {
+            console.log(err);
+          }
+        );
+      }
+      const artistIds = artistIdString.slice(0, -1);
+
+      currentUserLikes.dataValues.artistIds = artistIds;
+      currentUserLikes.dataValues.genres = genres;
+      console.log(currentUserLikes);
+
+      currentUserLikes.changed("artistIds", true);
+      currentUserLikes.changed("genres", true);
+
+      await currentUserLikes.save();
+
+      res.status(200).send("user updated!");
+    } else res.status(400).send("You are not logged in!");
   },
 };

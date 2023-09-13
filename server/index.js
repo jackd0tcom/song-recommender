@@ -3,7 +3,7 @@ import ViteExpress from "vite-express";
 import session from "express-session";
 import songCtrl from "./controllers/songCtrl.js";
 import authCtrl from "./controllers/authCtrl.js";
-const { register, login, checkUser, logout } = authCtrl;
+const { register, login, checkUser, logout, updateUser } = authCtrl;
 const { getSong, getAnonSong } = songCtrl;
 import SpotifyWebApi from "spotify-web-api-node";
 
@@ -49,10 +49,10 @@ app.post("/register", register);
 app.post("/login", login);
 app.get("/checkUser", checkUser);
 app.delete("/logout", logout);
+app.put("/updateUser", updateUser);
 
 app.post("/getSong", getSong);
 app.post("/getAnonSong", getAnonSong);
-app.put("/updateUser");
 
 ViteExpress.listen(app, PORT, () => console.log(`${PORT} chance baby`));
 
