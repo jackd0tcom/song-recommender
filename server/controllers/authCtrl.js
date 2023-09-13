@@ -105,7 +105,30 @@ export default {
     // if the passwords don't match up, send back 401 status with an error message
 
     try {
-      console.log("login");
+      const { username, password } = req.body;
+
+      const foundUser = await User.findOne({ where: { username } });
+
+      if (foundUser) {
+        const loggedIn = bcrypt.compareSync(password, foundUser.password);
+        const userLikes = await Likes.findOne({
+          where: { userId: foundUser.userId },
+        });
+        const { artistIds, genres } = userLikes;
+        if (loggedIn) {
+          req.session.user = {
+            userId: foundUser.userId,
+            username: foundUser.username,
+            artistIds,
+            genres,
+          };
+          res.send(req.session.user);
+        } else {
+          res.status(401).send("Incorrect Password");
+        }
+      } else {
+        res.status(400).send("There is no user with that username");
+      }
     } catch (err) {
       console.log(err);
       res.sendStatus(500).send("somthing broke");
