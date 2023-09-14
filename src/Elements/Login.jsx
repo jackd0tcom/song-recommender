@@ -32,8 +32,8 @@ const Login = ({
         <br />
         <button>Login</button>
         <br />
-        <a onClick={register}>Create new account</a>
       </form>
+      <button onClick={register}>Create new account</button>
     </>
   );
 };

@@ -5,7 +5,7 @@ import { spotifyApi } from "../index.js";
 export default {
   register: async (req, res) => {
     try {
-      const { username, password, fname, lname, artists, genres } = req.body;
+      const { username, password, artists, genres } = req.body;
 
       const foundUser = await User.findOne({ where: { username } });
 
@@ -42,8 +42,6 @@ export default {
         const newUser = await User.create({
           username,
           password: hash,
-          fname,
-          lname,
         });
 
         const newUserLikes = await Likes.create({

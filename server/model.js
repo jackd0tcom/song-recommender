@@ -20,14 +20,6 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    fname: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    lname: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     userImg: {
       type: DataTypes.STRING,
       allowNull: true,

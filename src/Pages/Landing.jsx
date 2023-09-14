@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 const Landing = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [fname, setFName] = useState("first name");
-  const [lname, setLName] = useState("last name");
+  const [artists, setArtists] = useState("");
+  const [genres, setGenres] = useState("");
   const [register, setRegister] = useState(false);
   const dispatch = useDispatch();
 
@@ -21,8 +21,8 @@ const Landing = () => {
           ? {
               username,
               password,
-              fname,
-              lname,
+              artists,
+              genres,
             }
           : {
               username,
@@ -37,7 +37,18 @@ const Landing = () => {
   };
 
   return register ? (
-    <Register />
+    <Register
+      submit={handleFormSubmit}
+      register={setRegister}
+      setUsername={setUsername}
+      setPassword={setPassword}
+      username={username}
+      password={password}
+      artists={artists}
+      genres={genres}
+      setArtists={setArtists}
+      setGenres={setGenres}
+    />
   ) : (
     <Login
       submit={handleFormSubmit}
