@@ -7,12 +7,14 @@ import AnonSong from "./Pages/AnonSong";
 import SongRec from "./Pages/SongRec";
 import EditUser from "./Pages/EditUser";
 import { useSelector } from "react-redux";
+import Nav from "./Elements/Nav";
 
 function App() {
   const userId = useSelector((state) => state.userId);
 
   return (
     <>
+      <Nav></Nav>
       <Routes>
         <Route index element={<Home />} />
         <Route

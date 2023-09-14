@@ -33,7 +33,10 @@ const Landing = () => {
         console.log(res.data);
         dispatch({ type: "LOGIN", payload: res.data.userId });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        alert(err.response.data);
+      });
   };
 
   return register ? (

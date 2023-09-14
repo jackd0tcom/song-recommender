@@ -115,6 +115,7 @@ export default {
     }
   },
   logout: async (req, res) => {
+    console.log("logout");
     req.session.destroy();
     res.status(200).send("there is no user on the session boi");
   },

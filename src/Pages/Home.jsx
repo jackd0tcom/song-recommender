@@ -1,7 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const userId = useSelector((state) => state.userId);
+
   const navigate = useNavigate();
   return (
     <div>
@@ -17,7 +20,7 @@ const Home = () => {
       </button>
       <br />
       <br />
-      <button onClick={() => navigate("/login")}>Login</button>
+      {userId ? "" : <button onClick={() => navigate("/login")}>Login</button>}
     </div>
   );
 };
