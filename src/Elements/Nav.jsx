@@ -19,7 +19,10 @@ const Nav = () => {
   const logout = () => {
     axios
       .delete("/api/logout")
-      .then((res) => dispatch({ type: "LOGOUT" }))
+      .then((res) => {
+        dispatch({ type: "LOGOUT" });
+        navigate("/");
+      })
       .catch((err) => console.log(err));
   };
 
