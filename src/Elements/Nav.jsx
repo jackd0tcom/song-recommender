@@ -2,10 +2,12 @@ import React from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.userId);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -23,9 +25,9 @@ const Nav = () => {
 
   return (
     <>
+      <button onClick={() => navigate("/")}>Home</button>
       {userId ? (
         <nav>
-          <h4>Home</h4>
           <button onClick={logout}>logout</button>
         </nav>
       ) : null}

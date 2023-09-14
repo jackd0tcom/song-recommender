@@ -15,7 +15,7 @@ const Home = () => {
           internet
         </i>
       </p>
-      <button onClick={() => navigate("/anonSong")}>
+      <button onClick={() => navigate("/songRec")}>
         Get a new recommendation
       </button>
       <br />
