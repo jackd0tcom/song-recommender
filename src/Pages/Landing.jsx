@@ -1,13 +1,53 @@
-import React from "react";
+import axios from "axios";
+import { useState } from "react";
+import Login from "../Elements/Login";
+import Register from "../Elements/Register";
+import { useDispatch } from "react-redux";
 
 const Landing = () => {
-  // setup state variables for username and password, as well as a state that tracks whether or not the user is registering or logging in
-  // return the login or register components based on the registering state value
-  // write form submission function, that when forms are submitted an axios is called to either the register or login endpoint, based on the same registering state value
-  // need to pass in a body object from the form (which should be the state values of username and password) and send it to the backend
-  //
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [fname, setFName] = useState("first name");
+  const [lname, setLName] = useState("last name");
+  const [register, setRegister] = useState(false);
+  const dispatch = useDispatch();
 
-  return <div>Landing</div>;
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        register ? "/api/register" : "/api/login",
+        register
+          ? {
+              username,
+              password,
+              fname,
+              lname,
+            }
+          : {
+              username,
+              password,
+            }
+      )
+      .then((res) => {
+        console.log(res.data);
+        dispatch({ type: "LOGIN", payload: res.data.userId });
+      })
+      .catch((err) => console.log(err));
+  };
+
+  return register ? (
+    <Register />
+  ) : (
+    <Login
+      submit={handleFormSubmit}
+      register={setRegister}
+      setUsername={setUsername}
+      setPassword={setPassword}
+      username={username}
+      password={password}
+    />
+  );
 };
 
 export default Landing;

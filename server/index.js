@@ -45,14 +45,14 @@ app.use(
 
 // Endpoints here!
 // auth endpoints
-app.post("/register", register);
-app.post("/login", login);
-app.get("/checkUser", checkUser);
-app.delete("/logout", logout);
-app.put("/updateUser", updateUser);
+app.post("/api/register", register);
+app.post("/api/login", login);
+app.get("/api/checkUser", checkUser);
+app.delete("/api/logout", logout);
+app.put("/api/updateUser", updateUser);
 
-app.post("/getSong", getSong);
-app.post("/getAnonSong", getAnonSong);
+app.post("/api/getSong", getSong);
+app.post("/api/getAnonSong", getAnonSong);
 
 ViteExpress.listen(app, PORT, () => console.log(`${PORT} chance baby`));
 

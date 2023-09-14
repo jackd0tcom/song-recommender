@@ -96,6 +96,7 @@ export default {
             genres,
           };
           res.send(req.session.user);
+          console.log("logged in successfully!");
         } else {
           res.status(401).send("Incorrect Password");
         }

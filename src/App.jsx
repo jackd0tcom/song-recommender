@@ -1,18 +1,24 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Home from "./Pages/Home";
-import Login from "./Pages/Login";
+import Landing from "./Pages/Landing";
 import AnonSong from "./Pages/AnonSong";
 import SongRec from "./Pages/SongRec";
 import EditUser from "./Pages/EditUser";
+import { useSelector } from "react-redux";
 
 function App() {
+  const userId = useSelector((state) => state.userId);
+
   return (
     <>
       <Routes>
         <Route index element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={userId ? <Navigate to="/" /> : <Landing />}
+        />
         <Route path="/anonSong" element={<AnonSong />} />
         <Route path="/songRec" element={<SongRec />} />
         <Route path="/editUser" element={<EditUser />} />
