@@ -54,9 +54,8 @@ export default {
         req.session.user = {
           userId: newUser.userId,
           username: newUser.username,
-          artists: newUserLikes.artistIds,
+          artistIds: newUserLikes.artistIds,
           genres: newUserLikes.genres,
-          likesTableUserId: newUserLikes.userId,
         };
 
         res.status(200).send(req.session.user);
