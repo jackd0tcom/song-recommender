@@ -8,7 +8,7 @@ export default {
         limit: 1,
         market: "US",
         seed_artists: [artistIds],
-        // seed_genres: [genres],
+        seed_genres: [genres],
       })
       .then(
         function (data) {
@@ -45,7 +45,7 @@ export default {
         limit: 1,
         market: "US",
         seed_artists: [artistIds],
-        // seed_genres: [genres],
+        seed_genres: [genres],
       })
       .then(
         function (data) {

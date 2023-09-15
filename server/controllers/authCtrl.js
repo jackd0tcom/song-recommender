@@ -5,6 +5,7 @@ import { spotifyApi } from "../index.js";
 export default {
   register: async (req, res) => {
     try {
+      console.log("register");
       const { username, password, artists, genres } = req.body;
 
       const foundUser = await User.findOne({ where: { username } });
@@ -73,8 +74,8 @@ export default {
     // if user is found, use bcrypt.compareSync(), and pass in the new password from req.body, as well as the foundUser's password from the db
     // if the passwords match up, send the user info to the session and send status of 200 with the req.session.user
     // if the passwords don't match up, send back 401 status with an error message
-
     try {
+      console.log("login");
       const { username, password } = req.body;
 
       const foundUser = await User.findOne({ where: { username } });
