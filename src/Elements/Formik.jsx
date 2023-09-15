@@ -154,9 +154,16 @@ const FormikComp = ({
           value={genre}
           key={genre}
           onClick={(e) => {
-            const array = [...genres, genre + ","];
-            const string = array.join("");
-            setGenres(string);
+            if (e.target.checked) {
+              const array = [...genres, genre + ","];
+              const string = array.join("");
+              setGenres(string);
+              console.log(genres);
+            } else {
+              const newString = genres.replace(e.target.value + ",", "");
+              setGenres(newString);
+              console.log(genres);
+            }
           }}
         />
         {genre}
