@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import SongRecCard from "../Elements/SongRecCard";
+import GenresForm from "../Elements/GenresForm";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,11 +33,7 @@ const SongRec = () => {
               onChange={(e) => setArtists(e.target.value)}
             />
             <br />
-            <input
-              type="text"
-              placeholder="Liked Genres (Max 5)"
-              onChange={(e) => setGenres(e.target.value)}
-            />
+            <GenresForm genres={genres} setGenres={setGenres} />
             <br />
             <button>gimme a song!</button>
           </form>
