@@ -1,11 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import SongRecCard from "../Elements/SongRecCard";
-import AnonSong from "./AnonSong";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SongRec = () => {
   const userId = useSelector((state) => state.userId);
+  const navigate = useNavigate();
 
   const [artists, setArtists] = useState("");
   const [genres, setGenres] = useState("");
@@ -13,11 +14,7 @@ const SongRec = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(artists, genres);
-    return (
-      <>
-        <SongRecCard artists={artists} genres={genres} />
-      </>
-    );
+    navigate("/anonSong", { state: { artists, genres } });
   };
 
   return (
