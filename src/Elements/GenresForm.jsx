@@ -144,11 +144,9 @@ const GenresForm = ({ genres, setGenres }) => {
                 const array = [...genres, genre + ","];
                 const string = array.join("");
                 setGenres(string);
-                console.log(genres);
               } else {
                 const newString = genres.replace(e.target.value + ",", "");
                 setGenres(newString);
-                console.log(genres);
               }
             }}
           />

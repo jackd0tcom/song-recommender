@@ -1,4 +1,5 @@
 import React from "react";
+import GenresForm from "./GenresForm";
 
 const Register = ({
   submit,
@@ -14,7 +15,7 @@ const Register = ({
 }) => {
   return (
     <>
-      <h1>Create New Account</h1>
+      <h1>Sign Up</h1>
       <form onSubmit={(e) => submit(e)}>
         <input
           type="text"
@@ -40,16 +41,8 @@ const Register = ({
           onChange={(e) => setArtists(e.target.value)}
         />
         <br />
-        <input
-          type="text"
-          id="genres"
-          placeholder="Liked Genres (Max 5)"
-          value={genres}
-          onChange={(e) => setGenres(e.target.value)}
-        />
-        <br />
-
-        <button>Create New Account</button>
+        <GenresForm genres={genres} setGenres={setGenres} />
+        <button>Sign Up</button>
       </form>
     </>
   );

@@ -41,7 +41,7 @@ const Landing = () => {
   };
 
   return register ? (
-    <FormikComp
+    <Register
       submit={handleFormSubmit}
       register={setRegister}
       setUsername={setUsername}
