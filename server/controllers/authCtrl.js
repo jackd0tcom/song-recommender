@@ -131,13 +131,8 @@ export default {
         const currentUserLikes = await Likes.findOne({ where: { userId } });
         const currentUser = await User.findOne({ where: { userId } });
         const usernameTaken = await User.findOne({ where: { username } });
-
-        if (usernameTaken) {
-          if (usernameTaken.dataValues.userId !== userId) {
-            res.send("That username is already taken, try a different one");
-          }
-        } else {
-          console.log("else block");
+        if (!usernameTaken || usernameTaken.dataValues.userId === userId) {
+          console.log("user found");
           let artistIdString = "";
           const artistStrings = artists.split(", ");
 
@@ -175,7 +170,8 @@ export default {
 
           res.send(req.session.user);
           console.log(req.session.user);
-          return;
+        } else {
+          res.send("that username is already taken, try a different one!");
         }
       } else {
         res.status(400).send("You are not logged in!");
