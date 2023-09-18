@@ -123,59 +123,65 @@ export default {
     res.status(200).send("there is no user on the session boi");
   },
   updateUser: async (req, res) => {
-    console.log("updateUser");
-    if (req.session.user) {
-      const { artists, genres, username } = req.body;
-      const { userId } = req.session.user;
-      const currentUserLikes = await Likes.findOne({ userId });
-      const currentUser = await User.findOne({ userId });
+    try {
+      console.log("updateUser");
+      if (req.session.user) {
+        const { artists, genres, username } = req.body;
+        const { userId } = req.session.user;
+        const currentUserLikes = await Likes.findOne({ where: { userId } });
+        const currentUser = await User.findOne({ where: { userId } });
+        const usernameTaken = await User.findOne({ where: { username } });
 
-      const usernameTaken = await User.findOne({ where: { username } });
+        if (usernameTaken) {
+          if (usernameTaken.dataValues.userId !== userId) {
+            res.send("That username is already taken, try a different one");
+          }
+        } else {
+          console.log("else block");
+          let artistIdString = "";
+          const artistStrings = artists.split(", ");
 
-      console.log(usernameTaken);
-      if (usernameTaken) {
-        res
-          .sendStatus(400)
-          .send("That username is already taken, try a different one");
-        return;
-      } else {
-        let artistIdString = "";
-        const artistStrings = artists.split(", ");
+          for (let artistName of artistStrings) {
+            await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
+              function (data) {
+                const Id = data.body.artists.items[0].id;
+                artistIdString += Id + ",";
+              },
+              function (err) {
+                console.log(err);
+              }
+            );
+          }
+          const artistIds = artistIdString.slice(0, -1);
 
-        for (let artistName of artistStrings) {
-          await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
-            function (data) {
-              const Id = data.body.artists.items[0].id;
-              artistIdString += Id + ",";
-            },
-            function (err) {
-              console.log(err);
-            }
-          );
+          req.session.user = {
+            userId,
+            username,
+            artists,
+            artistIds,
+            genres,
+          };
+
+          currentUser.update({ username: username });
+
+          currentUserLikes.update({
+            artists: artists,
+            artistIds: artistIds,
+            genres: genres,
+          });
+
+          await currentUser.save();
+          await currentUserLikes.save();
+
+          res.send(req.session.user);
+          console.log(req.session.user);
+          return;
         }
-        const artistIds = artistIdString.slice(0, -1);
-
-        req.session.user = {
-          userId,
-          artists,
-          artistIds,
-          genres,
-        };
-
-        currentUserLikes.dataValues.artistIds = artistIds;
-        currentUserLikes.dataValues.genres = genres;
-        currentUser.username = username;
-
-        currentUser.changed("username", true);
-        currentUserLikes.changed("artistIds", true);
-        currentUserLikes.changed("genres", true);
-
-        await currentUser.save();
-        await currentUserLikes.save();
-
-        res.sendStatus(200).send(req.session.user);
-        return;
+      } else {
+        res.status(400).send("You are not logged in!");
       }
-    } else res.status(400).send("You are not logged in!");
+    } catch (err) {
+      console.log(err);
+    }
   },
 };

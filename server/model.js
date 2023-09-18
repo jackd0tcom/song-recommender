@@ -20,10 +20,6 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    userImg: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
   },
   {
     modelName: "users",

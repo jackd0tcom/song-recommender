@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GenresForm from "../Elements/GenresForm";
+import Login from "../Elements/Login";
 
 const EditUser = () => {
   const userId = useSelector((state) => state.userId);
@@ -28,8 +29,9 @@ const EditUser = () => {
     navigate("/login");
   };
 
-  const handleSubmit = () => {
-    axios.put("/api/updateUser", { username, artists, genres });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await axios.put("/api/updateUser", { username, artists, genres });
   };
 
   return userId ? (
@@ -58,7 +60,9 @@ const EditUser = () => {
         <button>Edit Account</button>
       </form>
     </>
-  ) : null;
+  ) : (
+    <>{noUser}</>
+  );
 };
 
 export default EditUser;
