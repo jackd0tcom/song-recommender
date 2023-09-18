@@ -32,8 +32,15 @@ const Nav = () => {
       {userId ? (
         <nav>
           <button onClick={logout}>logout</button>
+          <button onClick={() => navigate("/editUser")}>Profile</button>
         </nav>
-      ) : null}
+      ) : (
+        <>
+          <nav>
+            <a onClick={() => navigate("/login")}>Login</a>
+          </nav>
+        </>
+      )}
     </>
   );
 };

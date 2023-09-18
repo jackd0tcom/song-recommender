@@ -25,4 +25,4 @@ const fibFunc = (n) => {
   console.log(fib[n]);
 };
 
-fibFunc();
+// fibFunc();

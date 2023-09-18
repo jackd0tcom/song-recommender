@@ -42,6 +42,9 @@ Likes.init(
     artistIds: {
       type: DataTypes.STRING,
     },
+    artists: {
+      type: DataTypes.STRING,
+    },
     genres: {
       type: DataTypes.STRING,
     },

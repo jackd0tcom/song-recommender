@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 
 const genresArr = [
   "Acoustic",
@@ -16,7 +17,6 @@ const genresArr = [
   "British",
   "Bantopop",
   "Chicago-house",
-  "Children",
   "Chill",
   "Classical",
   "Club",
@@ -28,7 +28,6 @@ const genresArr = [
   "Deep-house",
   "Detroit-techno",
   "Disco",
-  "Disney",
   "Drum-and-bass",
   "Dub",
   "Dubstep",
@@ -69,7 +68,6 @@ const genresArr = [
   "J-rock",
   "Jazz",
   "K-pop",
-  "Kids",
   "Latin",
   "Latino",
   "Malay",
@@ -133,23 +131,29 @@ const GenresForm = ({ genres, setGenres }) => {
   const genreBoxes = genresArr.map((genre) => {
     return (
       <>
-        <label key={genre}>
-          <input
-            type="checkbox"
-            name="genres"
-            value={genre}
-            key={genre}
-            onClick={(e) => {
-              if (e.target.checked) {
-                const array = [...genres, genre + ","];
-                const string = array.join("");
-                setGenres(string);
-              } else {
-                const newString = genres.replace(e.target.value + ",", "");
-                setGenres(newString);
-              }
-            }}
-          />
+        <input
+          className="hideMe"
+          type="checkbox"
+          name="genres"
+          id={genre}
+          value={genre}
+          key={genre + "-input"}
+          onClick={(e) => {
+            if (e.target.checked) {
+              const array = [...genres, genre + ","];
+              const string = array.join("");
+              setGenres(string);
+            } else {
+              const newString = genres.replace(e.target.value + ",", "");
+              setGenres(newString);
+            }
+          }}
+        />
+        <label
+          htmlFor={genre}
+          key={genre + "-label"}
+          className="toggle-control"
+        >
           {genre}
         </label>
       </>
@@ -158,7 +162,7 @@ const GenresForm = ({ genres, setGenres }) => {
   return (
     <>
       <h3>Select up to 5 Genres:</h3>
-      {genreBoxes}
+      <div className="genreBoxes">{genreBoxes}</div>
     </>
   );
 };

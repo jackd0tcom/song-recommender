@@ -47,6 +47,7 @@ export default {
 
         const newUserLikes = await Likes.create({
           artistIds: artistIds,
+          artists,
           genres,
         });
 
@@ -56,6 +57,7 @@ export default {
           userId: newUser.userId,
           username: newUser.username,
           artistIds: newUserLikes.artistIds,
+          artists: newUserLikes.artists,
           genres: newUserLikes.genres,
         };
 
@@ -85,11 +87,12 @@ export default {
         const userLikes = await Likes.findOne({
           where: { userId: foundUser.userId },
         });
-        const { artistIds, genres } = userLikes;
+        const { artistIds, artists, genres } = userLikes;
         if (loggedIn) {
           req.session.user = {
             userId: foundUser.userId,
             username: foundUser.username,
+            artists,
             artistIds,
             genres,
           };
@@ -122,36 +125,57 @@ export default {
   updateUser: async (req, res) => {
     console.log("updateUser");
     if (req.session.user) {
-      const { artists, genres } = req.body;
+      const { artists, genres, username } = req.body;
       const { userId } = req.session.user;
       const currentUserLikes = await Likes.findOne({ userId });
+      const currentUser = await User.findOne({ userId });
 
-      let artistIdString = "";
-      const artistStrings = artists.split(", ");
+      const usernameTaken = await User.findOne({ where: { username } });
 
-      for (let artistName of artistStrings) {
-        await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
-          function (data) {
-            const Id = data.body.artists.items[0].id;
-            artistIdString += Id + ",";
-          },
-          function (err) {
-            console.log(err);
-          }
-        );
+      console.log(usernameTaken);
+      if (usernameTaken) {
+        res
+          .sendStatus(400)
+          .send("That username is already taken, try a different one");
+        return;
+      } else {
+        let artistIdString = "";
+        const artistStrings = artists.split(", ");
+
+        for (let artistName of artistStrings) {
+          await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
+            function (data) {
+              const Id = data.body.artists.items[0].id;
+              artistIdString += Id + ",";
+            },
+            function (err) {
+              console.log(err);
+            }
+          );
+        }
+        const artistIds = artistIdString.slice(0, -1);
+
+        req.session.user = {
+          userId,
+          artists,
+          artistIds,
+          genres,
+        };
+
+        currentUserLikes.dataValues.artistIds = artistIds;
+        currentUserLikes.dataValues.genres = genres;
+        currentUser.username = username;
+
+        currentUser.changed("username", true);
+        currentUserLikes.changed("artistIds", true);
+        currentUserLikes.changed("genres", true);
+
+        await currentUser.save();
+        await currentUserLikes.save();
+
+        res.sendStatus(200).send(req.session.user);
+        return;
       }
-      const artistIds = artistIdString.slice(0, -1);
-
-      currentUserLikes.dataValues.artistIds = artistIds;
-      currentUserLikes.dataValues.genres = genres;
-      console.log(currentUserLikes);
-
-      currentUserLikes.changed("artistIds", true);
-      currentUserLikes.changed("genres", true);
-
-      await currentUserLikes.save();
-
-      res.status(200).send("user updated!");
     } else res.status(400).send("You are not logged in!");
   },
 };

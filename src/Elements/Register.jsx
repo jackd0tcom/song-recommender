@@ -42,7 +42,7 @@ const Register = ({
         />
         <br />
         <GenresForm genres={genres} setGenres={setGenres} />
-        <button>Sign Up</button>
+        <button onClick={register}>Sign Up</button>
       </form>
     </>
   );

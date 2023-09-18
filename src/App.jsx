@@ -6,7 +6,6 @@ import Landing from "./Pages/Landing";
 import AnonSong from "./Pages/AnonSong";
 import SongRec from "./Pages/SongRec";
 import EditUser from "./Pages/EditUser";
-import FormikComp from "./Elements/Formik";
 import { useSelector } from "react-redux";
 import Nav from "./Elements/Nav";
 
@@ -23,7 +22,6 @@ function App() {
           element={userId ? <Navigate to="/" /> : <Landing />}
         />
         <Route path="/anonSong" element={<AnonSong />} />
-        <Route path="/formik" element={<FormikComp />} />
         <Route path="/songRec" element={<SongRec />} />
         <Route path="/editUser" element={<EditUser />} />
       </Routes>

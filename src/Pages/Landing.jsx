@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import Login from "../Elements/Login";
 import Register from "../Elements/Register";
-import FormikComp from "../Elements/Formik";
 import { useDispatch } from "react-redux";
 
 const Landing = () => {
