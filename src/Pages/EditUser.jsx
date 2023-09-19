@@ -32,6 +32,7 @@ const EditUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios.put("/api/updateUser", { username, artists, genres });
+    alert("Account successfully changed!");
   };
 
   return userId ? (
@@ -60,9 +61,7 @@ const EditUser = () => {
         <button>Edit Account</button>
       </form>
     </>
-  ) : (
-    <>{noUser}</>
-  );
+  ) : null;
 };
 
 export default EditUser;
