@@ -93,7 +93,7 @@ app.get("/callback", function (req, res) {
         "Successfully retrieved Access token. expires in:",
         expires_in
       );
-      res.send("Success! You can now close the window");
+      res.redirect("/");
 
       setInterval(async () => {
         const data = await spotifyApi.refreshAccessToken();
@@ -109,7 +109,7 @@ app.get("/callback", function (req, res) {
       res.send("error getting tokens", err);
     });
 });
-app.get("/spotifyAuth", (req, res) => {
+app.get("/login", (req, res) => {
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
 

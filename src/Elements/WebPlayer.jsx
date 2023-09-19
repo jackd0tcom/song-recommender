@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SpotifyWebPlayer from "react-spotify-web-playback";
 
-const WebPlayer = () => {
+const WebPlayer = ({ songId }) => {
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -12,10 +12,7 @@ const WebPlayer = () => {
 
   return (
     <>
-      <SpotifyWebPlayer
-        token={token}
-        uris={["spotify:artist:6HQYnRM4OzToCYPpVBInuU"]}
-      />
+      <SpotifyWebPlayer token={token} uris={[`spotify:track:${songId}`]} />
     </>
   );
 };

@@ -5,6 +5,7 @@ import WebPlayer from "./WebPlayer";
 
 const SongRecCard = ({ artists, genres }) => {
   const [songTitle, setSongTitle] = useState("");
+  const [songId, setSongId] = useState("");
   const [albumTitle, setAlbumTitle] = useState("");
   const [artistName, setArtistName] = useState("");
   const [albumCover, setAlbumCover] = useState("");
@@ -15,8 +16,8 @@ const SongRecCard = ({ artists, genres }) => {
     axios
       .post(userId ? "/api/getSong" : "/api/getAnonSong", { artists, genres })
       .then((res) => {
-        // console.log(res.data);
         setSongTitle(res.data.tracks[0].name);
+        setSongId(res.data.tracks[0].id);
         setAlbumTitle(res.data.tracks[0].album.name);
         setArtistName(res.data.tracks[0].artists[0].name);
         setAlbumCover(res.data.tracks[0].album.images[0].url);
@@ -40,7 +41,7 @@ const SongRecCard = ({ artists, genres }) => {
       <h2>{artistName}</h2>
       <button onClick={getSong}>gimme another</button>
       <br />
-      <WebPlayer />
+      <WebPlayer song={songId} />
     </>
   );
 };
