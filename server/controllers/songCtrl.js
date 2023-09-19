@@ -58,4 +58,20 @@ export default {
         }
       );
   },
+  spotifyAuth: async (req, res) => {
+    const scope = "streaming  user-read-email  user-read-private";
+    const state = "myStateCode";
+
+    const auth_query_parameters = new URLSearchParams({
+      response_type: "code",
+      client_id: process.env.SPOTIFY_CLIENT_ID,
+      scope,
+      redirect_uri: "http://localhost:5050/callback",
+      state,
+    });
+    res.redirect(
+      "https://accounts.spotify.com/authorize/?" +
+        auth_query_parameters.toString()
+    );
+  },
 };

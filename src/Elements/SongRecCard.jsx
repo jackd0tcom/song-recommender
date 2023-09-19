@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import WebPlayer from "./WebPlayer";
 
 const SongRecCard = ({ artists, genres }) => {
   const [songTitle, setSongTitle] = useState("");
@@ -38,6 +39,8 @@ const SongRecCard = ({ artists, genres }) => {
       <h2>{albumTitle}</h2>
       <h2>{artistName}</h2>
       <button onClick={getSong}>gimme another</button>
+      <br />
+      <WebPlayer />
     </>
   );
 };

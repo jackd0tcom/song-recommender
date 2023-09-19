@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 const Login = ({
   submit,
@@ -34,6 +35,12 @@ const Login = ({
         <br />
       </form>
       <button onClick={register}>Create new account</button>
+      <br />
+      <h3>If you want to stream the song here, you must:</h3>
+      <br />
+      <button onClick={async () => await axios.get("/spotifyAuth")}>
+        Sign in with Spotify
+      </button>
     </>
   );
 };
