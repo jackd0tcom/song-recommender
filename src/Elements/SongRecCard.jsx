@@ -41,7 +41,7 @@ const SongRecCard = ({ artists, genres }) => {
       <h2>{artistName}</h2>
       <button onClick={getSong}>gimme another</button>
       <br />
-      <WebPlayer song={songId} />
+      {/* <WebPlayer song={songId} /> */}
     </>
   );
 };

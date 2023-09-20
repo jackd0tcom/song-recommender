@@ -26,3 +26,22 @@ const fibFunc = (n) => {
 };
 
 // fibFunc();
+
+const bensFunc = (str) => {
+  if (!str.charAt(0)) {
+    throw new Error("please enter something");
+  } else {
+    const arr = str.toLowerCase().trim().split(" ");
+    let newStr = "";
+    arr.forEach((el) => {
+      if (el !== "") {
+        const capLetter = el.trim().charAt(0).toUpperCase();
+        const word = el.replace(el.charAt(0), capLetter);
+        newStr += word + " ";
+      }
+    });
+    return newStr.trim();
+  }
+};
+
+bensFunc("test    yup Woohoo");

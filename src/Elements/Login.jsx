@@ -35,12 +35,12 @@ const Login = ({
         <br />
       </form>
       <button onClick={register}>Create new account</button>
+      {/* <br /> */}
+      {/* <h3>If you want to stream the song here, you must:</h3>
       <br />
-      <h3>If you want to stream the song here, you must:</h3>
-      <br />
-      <button onClick={async () => await axios.get("/spotifyAuth")}>
+      <button onClick={async () => await axios.get("/auth/login")}>
         Sign in with Spotify
-      </button>
+      </button> */}
     </>
   );
 };
