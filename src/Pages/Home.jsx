@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import SongHistory from "../Elements/SongHistory";
 
 const Home = () => {
   const userId = useSelector((state) => state.userId);
@@ -21,6 +22,8 @@ const Home = () => {
       <br />
       <br />
       {userId ? "" : <button onClick={() => navigate("/login")}>Login</button>}
+      <br />
+      <div>{userId ? <SongHistory /> : null}</div>
     </div>
   );
 };

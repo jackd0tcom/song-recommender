@@ -19,4 +19,13 @@ export default {
       console.log(err);
     }
   },
+  getAllSongs: async (req, res) => {
+    try {
+      const { userId } = req.session.user;
+      const songs = await Song.findAll({ where: { userId } });
+      res.send(songs);
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
