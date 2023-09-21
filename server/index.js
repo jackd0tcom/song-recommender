@@ -3,6 +3,8 @@ import ViteExpress from "vite-express";
 import session from "express-session";
 import songCtrl from "./controllers/songCtrl.js";
 import authCtrl from "./controllers/authCtrl.js";
+import userCtrl from "./controllers/userCtrl.js";
+const { addSong } = userCtrl;
 const { register, login, checkUser, logout, updateUser } = authCtrl;
 const { getSong, getAnonSong, spotifyAuth } = songCtrl;
 import SpotifyWebApi from "spotify-web-api-node";
@@ -71,6 +73,8 @@ app.put("/api/updateUser", updateUser);
 
 app.post("/api/getSong", getSong);
 app.post("/api/getAnonSong", getAnonSong);
+app.post("/api/addSong", addSong);
+
 app.get("/api/getToken", (req, res) => {
   res.send(spotifyApi.getAccessToken());
 });
@@ -121,58 +125,58 @@ app.get("/api/getToken", (req, res) => {
 // app.get("/spotifyAuth", (req, res) => {
 //   res.redirect(spotifyApi.createAuthorizeURL(scopes));
 // });
-app.get("/auth/login", (req, res) => {
-  var scope =
-    "streaming \
-               user-read-email \
-               user-read-private";
+// app.get("/auth/login", (req, res) => {
+//   var scope =
+//     "streaming \
+//                user-read-email \
+//                user-read-private";
 
-  var state = "randomString";
+//   var state = "randomString";
 
-  var auth_query_parameters = new URLSearchParams({
-    response_type: "code",
-    client_id: clientId,
-    scope: scope,
-    redirect_uri: spotify_redirectUri,
-    state: state,
-  });
+//   var auth_query_parameters = new URLSearchParams({
+//     response_type: "code",
+//     client_id: clientId,
+//     scope: scope,
+//     redirect_uri: spotify_redirectUri,
+//     state: state,
+//   });
 
-  console.log(
-    "https://accounts.spotify.com/authorize/?" +
-      auth_query_parameters.toString()
-  );
-  res.redirect(
-    "https://accounts.spotify.com/authorize/?" +
-      auth_query_parameters.toString()
-  );
-});
+//   console.log(
+//     "https://accounts.spotify.com/authorize/?" +
+//       auth_query_parameters.toString()
+//   );
+//   res.redirect(
+//     "https://accounts.spotify.com/authorize/?" +
+//       auth_query_parameters.toString()
+//   );
+// });
 
-app.get("/callback", (req, res) => {
-  var code = req.query.code;
+// app.get("/callback", (req, res) => {
+//   var code = req.query.code;
 
-  var authOptions = {
-    url: "https://accounts.spotify.com/api/token",
-    form: {
-      code: code,
-      redirect_uri: spotify_redirectUri,
-      grant_type: "authorization_code",
-    },
-    headers: {
-      Authorization:
-        "Basic " +
-        Buffer.from(clientId + ":" + clientSecret).toString("base64"),
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    json: true,
-  };
+//   var authOptions = {
+//     url: "https://accounts.spotify.com/api/token",
+//     form: {
+//       code: code,
+//       redirect_uri: spotify_redirectUri,
+//       grant_type: "authorization_code",
+//     },
+//     headers: {
+//       Authorization:
+//         "Basic " +
+//         Buffer.from(clientId + ":" + clientSecret).toString("base64"),
+//       "Content-Type": "application/x-www-form-urlencoded",
+//     },
+//     json: true,
+//   };
 
-  app.post(authOptions, function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.redirect("/");
-    }
-  });
-});
+//   app.post(authOptions, function (error, response, body) {
+//     if (!error && response.statusCode === 200) {
+//       var access_token = body.access_token;
+//       res.redirect("/");
+//     }
+//   });
+// });
 
 ViteExpress.listen(app, PORT, () => console.log(`${PORT} chance baby`));
 

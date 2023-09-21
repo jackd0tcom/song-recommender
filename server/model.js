@@ -47,9 +47,40 @@ Likes.init(
   },
   { modelName: "likes", sequelize: db }
 );
+class Song extends Model {}
+Song.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    song: {
+      type: DataTypes.STRING,
+    },
+    artist: {
+      type: DataTypes.STRING,
+    },
+    album: {
+      type: DataTypes.STRING,
+    },
+    albumCover: {
+      type: DataTypes.STRING,
+    },
+    url: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    modelName: "song",
+    sequelize: db,
+  }
+);
 
 User.hasOne(Likes, { foreignKey: "userId" });
 Likes.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(Song, { foreignKey: "userId" });
+Song.belongsTo(User, { foreignKey: "userId" });
 
 if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
   console.log("Syncing database...");
@@ -58,4 +89,4 @@ if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
   console.log("Finished syncing database!");
 }
 
-export { User, Likes };
+export { User, Likes, Song };
