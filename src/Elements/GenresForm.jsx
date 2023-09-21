@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const genresArr = [
   "Acoustic",
@@ -128,6 +128,18 @@ const genresArr = [
 ];
 
 const GenresForm = ({ genres, setGenres }) => {
+  const [checked, setChecked] = useState(false);
+  const checkedGenres = genres.trim().split(",");
+  console.log(checkedGenres);
+
+  const isChecked = (genre) => {
+    checkedGenres.forEach((el) => {
+      if (el === genre) {
+        return true;
+      } else return false;
+    });
+  };
+
   const genreBoxes = genresArr.map((genre) => {
     return (
       <>
@@ -137,12 +149,13 @@ const GenresForm = ({ genres, setGenres }) => {
           name="genres"
           id={genre}
           value={genre}
+          checked={isChecked(genre)}
           key={genre + "-input"}
           onClick={(e) => {
             if (e.target.checked) {
               const array = [...genres, genre + ","];
               const string = array.join("");
-              setGenres(string);
+              setGenres(string.trim());
             } else {
               const newString = genres.replace(e.target.value + ",", "");
               setGenres(newString);

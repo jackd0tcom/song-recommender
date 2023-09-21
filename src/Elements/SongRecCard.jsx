@@ -9,6 +9,8 @@ const SongRecCard = ({ artists, genres }) => {
   const [albumTitle, setAlbumTitle] = useState("");
   const [artistName, setArtistName] = useState("");
   const [albumCover, setAlbumCover] = useState("");
+  const [songUrl, setSongUrl] = useState("");
+  const [artistUrl, setArtistUrl] = useState("");
 
   const userId = useSelector((state) => state.userId);
 
@@ -21,6 +23,9 @@ const SongRecCard = ({ artists, genres }) => {
         setAlbumTitle(res.data.tracks[0].album.name);
         setArtistName(res.data.tracks[0].artists[0].name);
         setAlbumCover(res.data.tracks[0].album.images[0].url);
+        setSongUrl(res.data.tracks[0].external_urls.spotify);
+        setArtistUrl(res.data.tracks[0].artists[0].external_urls.spotify);
+        console.log(artistUrl);
       })
       .catch((err) => console.log(err));
   };
@@ -37,10 +42,12 @@ const SongRecCard = ({ artists, genres }) => {
     <>
       <img src={albumCover} />
       <h2>{songTitle}</h2>
-      <h2>{albumTitle}</h2>
-      <h2>{artistName}</h2>
+      <h3>{albumTitle}</h3>
+      <a href={artistUrl}>{artistName}</a>
+      <br />
       <button onClick={getSong}>gimme another</button>
       <br />
+      <a href={songUrl}>Check out on Spotify!</a>
       {/* <WebPlayer song={songId} /> */}
     </>
   );

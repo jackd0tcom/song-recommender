@@ -50,7 +50,6 @@ export default {
       .then(
         function (data) {
           let recommendations = data.body;
-          console.log(recommendations);
           res.send(recommendations);
         },
         function (err) {

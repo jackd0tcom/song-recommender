@@ -127,6 +127,7 @@ export default {
       console.log("updateUser");
       if (req.session.user) {
         const { artists, genres, username } = req.body;
+        console.log(genres);
         const { userId } = req.session.user;
         const currentUserLikes = await Likes.findOne({ where: { userId } });
         const currentUser = await User.findOne({ where: { userId } });

@@ -20,7 +20,7 @@ const EditUser = () => {
       .then((res) => {
         setUsername(res.data.username);
         setArtists(res.data.artists);
-        setGenres(res.data.genres);
+        setGenres("");
       })
       .catch((err) => console.log(err));
   }, []);
