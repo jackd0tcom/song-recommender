@@ -129,8 +129,6 @@ const genresArr = [
 
 const GenresForm = ({ genres, setGenres }) => {
   const [checked, setChecked] = useState(false);
-  const checkedGenres = genres.trim().split(",");
-  console.log(checkedGenres);
 
   const isChecked = (genre) => {
     checkedGenres.forEach((el) => {
@@ -149,7 +147,6 @@ const GenresForm = ({ genres, setGenres }) => {
           name="genres"
           id={genre}
           value={genre}
-          checked={isChecked(genre)}
           key={genre + "-input"}
           onClick={(e) => {
             if (e.target.checked) {

@@ -11,18 +11,16 @@ const SongRec = () => {
 
   const [artists, setArtists] = useState("");
   const [genres, setGenres] = useState("");
+  const [popularity, setPopularity] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(artists, genres);
-    navigate("/anonSong", { state: { artists, genres } });
+    navigate("/anonSong", { state: { artists, genres, popularity } });
   };
 
   return (
     <>
       {userId ? (
-        // need to make a new route to send not logged in user to the
-
         <SongRecCard />
       ) : (
         <>
@@ -36,6 +34,16 @@ const SongRec = () => {
             <GenresForm genres={genres} setGenres={setGenres} />
             <br />
             <button>gimme a song!</button>
+            <br />
+            <label htmlFor="popularity">Define popularity:</label>
+            <br />
+            <input
+              type="range"
+              id="popularity"
+              onChange={(e) => {
+                setPopularity(e.target.value);
+              }}
+            />
           </form>
         </>
       )}

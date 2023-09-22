@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import WebPlayer from "./WebPlayer";
 
-const SongRecCard = ({ artists, genres }) => {
+const SongRecCard = ({ artists, genres, popularity }) => {
   const [songTitle, setSongTitle] = useState("");
   const [songId, setSongId] = useState("");
   const [albumTitle, setAlbumTitle] = useState("");
@@ -16,7 +16,11 @@ const SongRecCard = ({ artists, genres }) => {
 
   const getSong = () => {
     axios
-      .post(userId ? "/api/getSong" : "/api/getAnonSong", { artists, genres })
+      .post(userId ? "/api/getSong" : "/api/getAnonSong", {
+        artists,
+        genres,
+        popularity,
+      })
       .then((res) => {
         setSongTitle(res.data.tracks[0].name);
         setSongId(res.data.tracks[0].id);
@@ -48,7 +52,6 @@ const SongRecCard = ({ artists, genres }) => {
       <button onClick={getSong}>gimme another</button>
       <br />
       <a href={songUrl}>Check out on Spotify!</a>
-      {/* <WebPlayer song={songId} /> */}
     </>
   );
 };

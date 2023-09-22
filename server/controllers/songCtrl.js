@@ -22,7 +22,6 @@ export default {
             userId,
           });
           let recommendations = data.body;
-          console.log(newSong);
           res.send(recommendations);
         },
         function (err) {
@@ -32,7 +31,7 @@ export default {
   },
   getAnonSong: async (req, res) => {
     console.log("getAnonSong");
-    const { artists, genres } = req.body;
+    const { artists, genres, popularity } = req.body;
     let artistIdString = "";
     const artistStrings = artists.split(", ");
 
@@ -55,6 +54,7 @@ export default {
         market: "US",
         seed_artists: [artistIds],
         seed_genres: [genres],
+        max_popularity: [popularity],
       })
       .then(
         function (data) {
