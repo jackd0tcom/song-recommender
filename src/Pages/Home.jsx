@@ -1,10 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 import SongHistory from "../Elements/SongHistory";
 
 const Home = () => {
   const userId = useSelector((state) => state.userId);
+
+  const isNotAnon = async () => {
+    navigate("/songRec", { state: { isAnon: true } });
+  };
 
   const navigate = useNavigate();
   return (
@@ -16,9 +21,18 @@ const Home = () => {
           internet
         </i>
       </p>
-      <button onClick={() => navigate("/songRec")}>
-        Get a new recommendation
-      </button>
+      <br />
+      {userId ? (
+        <button
+          onClick={() => {
+            navigate("/songRec", { state: { isAnon: false } });
+          }}
+        >
+          Get a recommendation for you
+        </button>
+      ) : null}
+      <br />
+      <button onClick={isNotAnon}>Get a new recommendation</button>
       <br />
       <br />
       {userId ? "" : <button onClick={() => navigate("/login")}>Login</button>}

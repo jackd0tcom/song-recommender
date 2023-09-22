@@ -14,7 +14,7 @@ const SongHistory = () => {
 
     const allSongs = songs.map((song) => {
       return (
-        <div key={song.song}>
+        <div key={song.song + song.artist}>
           <img src={song.albumCover} />
           <p>{song.song}</p>
           <p>{song.album}</p>

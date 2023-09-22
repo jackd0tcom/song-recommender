@@ -4,11 +4,13 @@ import SongRecCard from "../Elements/SongRecCard";
 import GenresForm from "../Elements/GenresForm";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const SongRec = () => {
+  const location = useLocation();
+  const isAnon = location.state.isAnon;
   const userId = useSelector((state) => state.userId);
   const navigate = useNavigate();
-
   const [artists, setArtists] = useState("");
   const [genres, setGenres] = useState("");
   const [popularity, setPopularity] = useState(0);
@@ -20,7 +22,7 @@ const SongRec = () => {
 
   return (
     <>
-      {userId ? (
+      {isAnon === false ? (
         <SongRecCard />
       ) : (
         <>
