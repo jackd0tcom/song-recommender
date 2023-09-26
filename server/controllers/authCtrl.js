@@ -1,4 +1,4 @@
-import { User, Likes } from "../model.js";
+import { User, Likes, Artist } from "../model.js";
 import bcrypt from "bcryptjs";
 import { spotifyApi } from "../index.js";
 
@@ -17,21 +17,21 @@ export default {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
 
-        // artist handling
-        // example input: "rush, led zeppelin, ohsees"
-        // seperate them into individual artist strings
-        // send them over to spotify api
-        // add returned artistID to empty string
-        // add said string to likes table
-
         let artistIdString = "";
         const artistStrings = artists.split(", ");
+        let artistObj = [];
 
         for (let artistName of artistStrings) {
           await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
             function (data) {
               const Id = data.body.artists.items[0].id;
               artistIdString += Id + ",";
+              artistObj.push({
+                artist: data.body.artists.items[0].name,
+                genres: data.body.artists.items[0].genres,
+                url: data.body.artists.items[0].external_urls.spotify,
+                image: data.body.artists.items[0].images,
+              });
             },
             function (err) {
               console.log(err);
@@ -52,6 +52,17 @@ export default {
         });
 
         newUserLikes.setUser(newUser.userId);
+
+        artistObj.forEach(async (artist) => {
+          console.log(artist);
+          const newArtist = await Artist.create({
+            artist: artist.artist,
+            image: artist.image[0].url,
+            url: artist.url,
+            genres: artist.genres.join(" "),
+            userId: newUser.userId,
+          });
+        });
 
         req.session.user = {
           userId: newUser.userId,
