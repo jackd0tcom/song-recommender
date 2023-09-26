@@ -4,7 +4,7 @@ import session from "express-session";
 import songCtrl from "./controllers/songCtrl.js";
 import authCtrl from "./controllers/authCtrl.js";
 import userCtrl from "./controllers/userCtrl.js";
-const { addSong, getAllSongs } = userCtrl;
+const { addSong, getAllSongs, getAllArtists } = userCtrl;
 const { register, login, checkUser, logout, updateUser } = authCtrl;
 const { getSong, getAnonSong, spotifyAuth } = songCtrl;
 import SpotifyWebApi from "spotify-web-api-node";
@@ -75,6 +75,7 @@ app.post("/api/getSong", getSong);
 app.post("/api/getAnonSong", getAnonSong);
 app.post("/api/addSong", addSong);
 app.get("/api/getAllSongs", getAllSongs);
+app.get("/api/getAllArtists", getAllArtists);
 
 app.get("/api/getToken", (req, res) => {
   res.send(spotifyApi.getAccessToken());

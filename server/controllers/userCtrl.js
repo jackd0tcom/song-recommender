@@ -1,4 +1,4 @@
-import { Song } from "../model.js";
+import { Song, Artist } from "../model.js";
 
 export default {
   addSong: async (req, res) => {
@@ -24,6 +24,16 @@ export default {
       const { userId } = req.session.user;
       const songs = await Song.findAll({ where: { userId } });
       res.send(songs);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  getAllArtists: async (req, res) => {
+    try {
+      console.log("getAllArtists");
+      const { userId } = req.session.user;
+      const artists = await Artist.findAll({ where: { userId } });
+      res.send(artists);
     } catch (err) {
       console.log(err);
     }
