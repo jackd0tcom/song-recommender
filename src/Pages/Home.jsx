@@ -3,16 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import SongHistory from "../Elements/SongHistory";
+import SidePanel from "../Elements/SidePanel";
 
 const Home = () => {
   const userId = useSelector((state) => state.userId);
 
-  const isNotAnon = async () => {
-    navigate("/songRec", { state: { isAnon: true } });
-  };
-
   const navigate = useNavigate();
-  return (
+  return userId ? (
     <div>
       <h1>Welcome to SongRecommend-O</h1>
       <p>
@@ -22,23 +19,10 @@ const Home = () => {
         </i>
       </p>
       <br />
-      {userId ? (
-        <button
-          onClick={() => {
-            navigate("/songRec", { state: { isAnon: false } });
-          }}
-        >
-          Get a recommendation for you
-        </button>
-      ) : null}
-      <br />
-      <button onClick={isNotAnon}>Get a new recommendation</button>
-      <br />
-      <br />
-      {userId ? "" : <button onClick={() => navigate("/login")}>Login</button>}
-      <br />
-      <div>{userId ? <SongHistory /> : null}</div>
+      <button onClick={() => navigate("/login")}>Login</button>
     </div>
+  ) : (
+    <SidePanel />
   );
 };
 

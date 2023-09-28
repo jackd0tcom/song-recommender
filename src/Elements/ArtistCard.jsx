@@ -2,30 +2,24 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const ArtistCard = () => {
-  const [artistArr, setArtistArr] = useState([]);
-
-  useEffect(() => {
-    axios.get("/api/getAllArtists").then((res) => {
-      setArtistArr(res.data);
-    });
-  }, []);
-
-  const allArtists = artistArr.map((artist) => {
-    console.log(artist);
+const ArtistCard = ({ artistData }) => {
+  const allArtists = artistData.map((artist) => {
     return (
-      <>
+      <div key={artist.artist}>
         <img src={artist.image} />
         <p>{artist.artist}</p>
-        <br />
         <p>{artist.genres}</p>
-        <br />
         <a href={artist.url}>Check out on spotify!</a>
         <br />
-      </>
+      </div>
     );
   });
-  return <>{allArtists}</>;
+  return (
+    <>
+      <br />
+      {allArtists}
+    </>
+  );
 };
 
 export default ArtistCard;

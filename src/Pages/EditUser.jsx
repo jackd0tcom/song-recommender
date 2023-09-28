@@ -14,26 +14,32 @@ const EditUser = () => {
   const [username, setUsername] = useState("");
   const [artists, setArtists] = useState("");
   const [genres, setGenres] = useState("");
+  const [artistData, setArtistData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("api/checkUser")
-      .then((res) => {
-        setUsername(res.data.username);
-        setArtists(res.data.artists);
+    async function fetchData() {
+      try {
+        const [userData, artistData] = await Promise.all([
+          axios.get("api/checkUser"),
+          axios.get("/api/getAllArtists"),
+        ]);
+        setUsername(userData.data.username);
+        setArtists(userData.data.artists);
         setGenres("");
-      })
-      .catch((err) => console.log(err));
+        setArtistData(artistData.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchData();
   }, []);
-
-  const noUser = () => {
-    navigate("/login");
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios.put("/api/updateUser", { username, artists, genres });
-    alert("Account successfully changed!");
+    await axios.get("/api/getAllArtists").then((res) => {
+      setArtistData(res.data);
+    });
   };
 
   return userId ? (
@@ -48,7 +54,7 @@ const EditUser = () => {
           onChange={(e) => setUsername(e.target.value)}
         />
         <br />
-        <label htmlFor="artists">Artists</label>
+        <label htmlFor="artists">Your Artists:</label>
         <input
           type="text"
           name="artists"
@@ -57,7 +63,7 @@ const EditUser = () => {
           onChange={(e) => setArtists(e.target.value)}
         />
         <br />
-        <ArtistCard />
+        <ArtistCard artistData={artistData} />
         <br />
         <GenresForm genres={genres} setGenres={setGenres} />
         <br />

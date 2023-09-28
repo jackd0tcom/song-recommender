@@ -1,47 +1,20 @@
-// const artists = "rush, led zeppelin, ohsees";
+// 5 or more letters reversed
 
-// let artistIds = "";
-// const artistStrings = artists.split(", ");
-// const IdArray = artistStrings.map((artist) => {
-//   spotifyApi.searchArtists(`${artist}`).then(
-//     function (data) {
-//       console.log(data.body);
-//     },
-//     function (err) {
-//       console.log(err);
-//     }
-//   );
-// });
+// take in a string
+// declare empty string
+// turn the string into an array, split it at the spaces
+// loop over the array, .reverse()
+// add reversed word to the empty string + ' '
+// return the declared string, .trim()
 
-// EASTER EGG BITCHES
-
-const fib = [0, 1];
-
-const fibFunc = (n) => {
-  for (let i = 1; i <= n; i++) {
-    const newNum = fib[i] + fib[i - 1];
-    fib.push(newNum);
-  }
-  console.log(fib[n]);
+const reversed = (string) => {
+  let newString = "";
+  const arr = string.split(" ");
+  arr.forEach((word) => {
+    if (word.length >= 5) {
+      newString += word.split("").reverse().join("");
+      newString += " ";
+    } else newString += word + " ";
+  });
+  return newString.trim();
 };
-
-// fibFunc();
-
-const bensFunc = (str) => {
-  if (!str.charAt(0)) {
-    throw new Error("please enter something");
-  } else {
-    const arr = str.toLowerCase().trim().split(" ");
-    let newStr = "";
-    arr.forEach((el) => {
-      if (el !== "") {
-        const capLetter = el.trim().charAt(0).toUpperCase();
-        const word = el.replace(el.charAt(0), capLetter);
-        newStr += word + " ";
-      }
-    });
-    return newStr.trim();
-  }
-};
-
-bensFunc("test    yup Woohoo");

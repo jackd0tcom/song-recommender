@@ -140,7 +140,7 @@ const GenresForm = ({ genres, setGenres }) => {
 
   const genreBoxes = genresArr.map((genre) => {
     return (
-      <>
+      <div key={genre} style={{ display: "inline-block" }}>
         <input
           className="hideMe"
           type="checkbox"
@@ -166,7 +166,7 @@ const GenresForm = ({ genres, setGenres }) => {
         >
           {genre}
         </label>
-      </>
+      </div>
     );
   });
   return (
