@@ -20,6 +20,7 @@ export default {
         let artistIdString = "";
         const artistStrings = artists.split(", ");
         let artistObj = [];
+        let newArtists = "";
 
         for (let artistName of artistStrings) {
           await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
@@ -32,6 +33,7 @@ export default {
                 url: data.body.artists.items[0].external_urls.spotify,
                 image: data.body.artists.items[0].images,
               });
+              newArtists += data.body.artists.items[0].name + ",";
             },
             function (err) {
               console.log(err);
@@ -47,7 +49,7 @@ export default {
 
         const newUserLikes = await Likes.create({
           artistIds: artistIds,
-          artists,
+          artists: newArtists,
           genres,
         });
 
@@ -73,6 +75,7 @@ export default {
         };
 
         res.status(200).send(req.session.user);
+        console.log(req.session.user);
       }
     } catch (err) {
       console.log(err);
@@ -138,13 +141,12 @@ export default {
       console.log("updateUser");
       if (req.session.user) {
         const { artists, genres, username } = req.body;
-        console.log(genres);
         const { userId } = req.session.user;
         const currentUserLikes = await Likes.findOne({ where: { userId } });
         const currentUser = await User.findOne({ where: { userId } });
-        const usernameTaken = await User.findOne({ where: { username } });
-        if (!usernameTaken || usernameTaken.dataValues.userId === userId) {
-          console.log("user found");
+
+        if (artists) {
+          console.log(artists);
           let artistIdString = "";
           const artistStrings = artists.split(", ");
           let artistObj = [];
@@ -168,20 +170,9 @@ export default {
           }
           const artistIds = artistIdString.slice(0, -1);
 
-          req.session.user = {
-            userId,
-            username,
-            artists,
-            artistIds,
-            genres,
-          };
-
-          currentUser.update({ username: username });
-
           await Artist.destroy({ where: { userId } });
 
           artistObj.forEach(async (artist) => {
-            console.log(artist);
             const newArtist = await Artist.create({
               artist: artist.artist,
               image: artist.image[0].url,
@@ -191,20 +182,38 @@ export default {
             });
           });
 
+          req.session.user.artists = artists;
+          req.session.user.artistIds = artistIds;
+
           currentUserLikes.update({
             artists: artists,
             artistIds: artistIds,
+          });
+        }
+
+        if (username) {
+          const usernameTaken = await User.findOne({ where: { username } });
+          if (!usernameTaken || usernameTaken.dataValues.userId === userId) {
+            console.log("user found");
+            currentUser.update({ username: username });
+            await currentUser.save();
+            req.session.user.username = username;
+          } else {
+            res.send("that username is already taken, try a different one!");
+          }
+        }
+
+        if (genres) {
+          currentUserLikes.update({
             genres: genres,
           });
-
-          await currentUser.save();
           await currentUserLikes.save();
-
-          res.send(req.session.user);
-          console.log(req.session.user);
-        } else {
-          res.send("that username is already taken, try a different one!");
+          req.session.user.genres = genres;
         }
+
+        req.session.user.userId = userId;
+        res.send(req.session.user);
+        console.log(req.session.user);
       } else {
         res.status(400).send("You are not logged in!");
       }

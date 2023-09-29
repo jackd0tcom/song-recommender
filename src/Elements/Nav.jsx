@@ -26,13 +26,18 @@ const Nav = () => {
       .catch((err) => console.log(err));
   };
 
+  const showHistory = () => {
+    navigate("/history");
+  };
+
   return (
     <>
       <button onClick={() => navigate("/")}>Home</button>
       {userId ? (
         <nav>
           <button onClick={logout}>logout</button>
-          <button onClick={() => navigate("/editUser")}>Profile</button>
+          {/* <button onClick={() => navigate("/editUser")}>Profile</button> */}
+          <button onClick={showHistory}>My History</button>
         </nav>
       ) : (
         <>

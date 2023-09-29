@@ -34,16 +34,16 @@ const SongRecCard = ({ artists, genres, popularity }) => {
       .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
-    getSong();
-  }, []);
+  // useEffect(() => {
+  //   getSong();
+  // }, []);
 
   const handleGetAnother = () => {
     setSongTitle("");
   };
 
   return (
-    <>
+    <div className="song-rec-card">
       <img src={albumCover} />
       <h2>{songTitle}</h2>
       <h3>{albumTitle}</h3>
@@ -52,7 +52,7 @@ const SongRecCard = ({ artists, genres, popularity }) => {
       <button onClick={getSong}>gimme another</button>
       <br />
       <a href={songUrl}>Check out on Spotify!</a>
-    </>
+    </div>
   );
 };
 

@@ -40,3 +40,17 @@
 .read-the-docs {
   color: #888;
 }
+
+.main {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.side-panel {
+  width: 30vw;
+  display: flex;
+}
+
+.side-panel img {
+  width: 100px;
+}

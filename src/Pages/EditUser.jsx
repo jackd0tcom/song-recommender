@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GenresForm from "../Elements/GenresForm";
 import Login from "../Elements/Login";
-import ArtistCard from "../Elements/ArtistCard";
+import ArtistCard from "../Elements/ArtistsForm";
 
 const EditUser = () => {
   const userId = useSelector((state) => state.userId);

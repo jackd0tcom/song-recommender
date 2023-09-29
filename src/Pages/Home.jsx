@@ -2,14 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import SongHistory from "../Elements/SongHistory";
+import SongRecCard from "../Elements/SongRecCard";
 import SidePanel from "../Elements/SidePanel";
 
 const Home = () => {
   const userId = useSelector((state) => state.userId);
 
   const navigate = useNavigate();
-  return userId ? (
+  return !userId ? (
     <div>
       <h1>Welcome to SongRecommend-O</h1>
       <p>
@@ -22,7 +22,10 @@ const Home = () => {
       <button onClick={() => navigate("/login")}>Login</button>
     </div>
   ) : (
-    <SidePanel />
+    <div className="main">
+      <SidePanel />
+      <SongRecCard />
+    </div>
   );
 };
 
