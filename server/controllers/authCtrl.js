@@ -148,10 +148,11 @@ export default {
         if (artists) {
           console.log(artists);
           let artistIdString = "";
-          const artistStrings = artists.split(", ");
+          const artistStrings = artists.split(",");
           let artistObj = [];
 
           for (let artistName of artistStrings) {
+            console.log(artistName);
             await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
               function (data) {
                 const Id = data.body.artists.items[0].id;

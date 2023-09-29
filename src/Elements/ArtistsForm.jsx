@@ -1,10 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import AddArtistButton from "./addArtistButton";
 
 const ArtistCard = () => {
   const [artists, setArtists] = useState("");
   const [artistData, setArtistData] = useState([]);
+  const [displayedArtists, setDisplayedArtists] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -15,6 +17,7 @@ const ArtistCard = () => {
         ]);
         setArtists(userData.data.artists);
         setArtistData(artistData.data);
+        setDisplayedArtists(artistData.data);
       } catch (err) {
         console.log(err);
       }
@@ -28,18 +31,13 @@ const ArtistCard = () => {
       .replace(artistName.toLowerCase() + ",", "");
     setArtists(newString);
     axios.put("/api/updateUser", { artists: newString });
+    setDisplayedArtists(
+      displayedArtists.filter((artist) => artist.artist !== artistName)
+    );
   };
 
-  const allArtists = artistData.map((artist) => {
+  const allArtists = displayedArtists.map((artist) => {
     return (
-      // <label htmlFor="artists">Your Artists:</label>
-      // <input
-      //   type="text"
-      //   name="artists"
-      //   id="artists"
-      //   value={artists}
-      //   onChange={(e) => setArtists(e.target.value)}
-      // />
       <div key={artist.artist}>
         <img src={artist.image} />
         <p>{artist.artist}</p>
@@ -54,6 +52,12 @@ const ArtistCard = () => {
     <>
       <br />
       {allArtists}
+      <br />
+      <AddArtistButton
+        artists={artists}
+        setArtists={setArtists}
+        setDisplayedArtists={setDisplayedArtists}
+      />
     </>
   );
 };
