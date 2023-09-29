@@ -130,15 +130,16 @@ const genresArr = [
 const GenresForm = ({ genres, setGenres }) => {
   const [checked, setChecked] = useState(false);
 
-  const isChecked = (genre) => {
-    checkedGenres.forEach((el) => {
-      if (el === genre) {
-        return true;
-      } else return false;
-    });
-  };
+  // const isChecked = (genre) => {
+  //   checkedGenres.forEach((el) => {
+  //     if (el === genre) {
+  //       return true;
+  //     } else return false;
+  //   });
+  // };
 
   const genreBoxes = genresArr.map((genre) => {
+    const isChecked = genres.includes(genre);
     return (
       <div key={genre} style={{ display: "inline-block" }}>
         <input
@@ -148,7 +149,8 @@ const GenresForm = ({ genres, setGenres }) => {
           id={genre}
           value={genre}
           key={genre + "-input"}
-          onClick={(e) => {
+          checked={isChecked}
+          onChange={(e) => {
             if (e.target.checked) {
               const array = [...genres, genre + ","];
               const string = array.join("");
