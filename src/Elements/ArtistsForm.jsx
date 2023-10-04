@@ -38,21 +38,36 @@ const ArtistCard = () => {
 
   const allArtists = displayedArtists.map((artist) => {
     return (
-      <div key={artist.artist}>
-        <img src={artist.image} />
-        <p>{artist.artist}</p>
-        <p>{artist.genres}</p>
-        <a href={artist.url}>Check out on spotify!</a>
-        <button onClick={() => handleDelete(artist.artist)}>X</button>
-        <br />
+      <div
+        key={artist.artist}
+        className="flex pb-4 justify-evenly rounded-xl items-center bg-opacity-20 bg-neutral-700 hover:bg-neutral-800 transition duration-200 hover:rounded-xl p-2 m-2"
+      >
+        <img src={artist.image} className="w-1/3 rounded shadow-lg" />
+        <div className="flex flex-col basis-3/5 pl-4 pt-2 h-3/4 justify-evenly">
+          <a href={artist.url} className="text-white text-xl">
+            {artist.artist}
+          </a>
+          <p className="text-neutral-500">{artist.genres}</p>
+        </div>
+        <button
+          onClick={() => handleDelete(artist.artist)}
+          className="text-white px-4 py-2 border-opacity-50 rounded-full border-neutral-500 border-2 bg-opacity-70 hover:bg-yellow-600 transition duration-150"
+        >
+          X
+        </button>
       </div>
     );
   });
   return (
     <>
-      <br />
-      {allArtists}
-      <br />
+      <div className="flex flex-col p-4 pb-0 pt-0">
+        <h1 className="text-neutral-300 font-semibold text-xl pl-4 pb-4">
+          Artists
+        </h1>
+        <div className="overflow-auto h-72 shadow-inner rounded-xl bg-neutral-900 transition duration-150 hover:shadow-neutral-900">
+          {allArtists}
+        </div>
+      </div>
       <AddArtistButton
         artists={artists}
         setArtists={setArtists}

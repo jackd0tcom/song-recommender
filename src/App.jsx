@@ -7,21 +7,29 @@ import SongHistory from "./Elements/SongHistory";
 import SongRec from "./Pages/SongRec";
 import EditUser from "./Pages/EditUser";
 import { useSelector } from "react-redux";
-import Nav from "./Elements/Nav";
+import { useEffect } from "react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 
 function App() {
   const userId = useSelector((state) => state.userId);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios
+      .get("api/checkUser")
+      .then((res) => dispatch({ type: "LOGIN", payload: res.data.userId }))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
-      <Nav></Nav>
       <Routes>
         <Route index element={<Home />} />
         <Route
           path="/login"
           element={userId ? <Navigate to="/" /> : <Landing />}
         />
-        {/* <Route path="/anonSong" element={<AnonSong />} /> */}
         <Route path="/history" element={<SongHistory />} />
         <Route path="/songRec" element={<SongRec />} />
         <Route path="/editUser" element={<EditUser />} />

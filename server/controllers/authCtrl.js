@@ -148,18 +148,17 @@ export default {
         if (artists) {
           console.log(artists);
           let artistIdString = "";
-          const artistStrings = artists.split(",");
+          const artistStrings = artists.trim().split(",");
           let artistObj = [];
 
           for (let artistName of artistStrings) {
-            console.log(artistName);
             await spotifyApi.searchArtists(`${artistName}`, { limit: 1 }).then(
               function (data) {
                 const Id = data.body.artists.items[0].id;
                 artistIdString += Id + ",";
                 artistObj.push({
                   artist: data.body.artists.items[0].name,
-                  genres: data.body.artists.items[0].genres,
+                  genres: data.body.artists.items[0].genres[0],
                   url: data.body.artists.items[0].external_urls.spotify,
                   image: data.body.artists.items[0].images,
                 });
@@ -178,7 +177,12 @@ export default {
               artist: artist.artist,
               image: artist.image[0].url,
               url: artist.url,
-              genres: artist.genres.join(" "),
+              genres: artist.genres
+                .split(" ")
+                .map((el) => {
+                  return el.replace(el[0], el[0].toUpperCase());
+                })
+                .join(" "),
               userId: currentUser.userId,
             });
           });

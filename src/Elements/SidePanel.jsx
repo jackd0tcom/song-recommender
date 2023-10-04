@@ -7,14 +7,13 @@ import { useNavigate } from "react-router-dom";
 import EditGenresForm from "./EditGenresForm";
 import Login from "../Elements/Login";
 import ArtistCard from "./ArtistsForm";
+import Nav from "./Nav";
 
 const SidePanel = () => {
   return (
-    <div className="side-panel">
+    <div className="flex flex-col w-1/3 my-4 ml-4 bg-neutral-800 rounded h-max-full justify-evenly">
       <ArtistCard />
-      <br />
       <EditGenresForm />
-      <br />
     </div>
   );
 };
