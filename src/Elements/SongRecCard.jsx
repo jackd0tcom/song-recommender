@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Nav from "./Nav";
 
-const SongRecCard = ({ artists, genres, popularity }) => {
+const SongRecCard = ({ artists, genres, popularity, isError, setIsError }) => {
   const [songTitle, setSongTitle] = useState("");
   const [songId, setSongId] = useState("");
   const [albumTitle, setAlbumTitle] = useState("");
@@ -11,8 +11,11 @@ const SongRecCard = ({ artists, genres, popularity }) => {
   const [albumCover, setAlbumCover] = useState("");
   const [songUrl, setSongUrl] = useState("");
   const [artistUrl, setArtistUrl] = useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [duration, setDuration] = useState(0);
   const [firstSong, setFirstSong] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const userId = useSelector((state) => state.userId);
 
@@ -20,12 +23,9 @@ const SongRecCard = ({ artists, genres, popularity }) => {
     setFirstSong(true);
     setIsLoading(true);
     axios
-      .post(userId ? "/api/getSong" : "/api/getAnonSong", {
-        artists,
-        genres,
-        popularity,
-      })
+      .post("/api/getSong")
       .then((res) => {
+        console.log(res.data.tracks[0].preview_url);
         setTimeout(() => {
           setIsLoading(false);
           setSongTitle(res.data.tracks[0].name);
@@ -35,10 +35,15 @@ const SongRecCard = ({ artists, genres, popularity }) => {
           setAlbumCover(res.data.tracks[0].album.images[0].url);
           setSongUrl(res.data.tracks[0].external_urls.spotify);
           setArtistUrl(res.data.tracks[0].artists[0].external_urls.spotify);
-          console.log(artistUrl);
+          setPreviewUrl(res.data.tracks[0].preview_url);
+          setDuration(res.data.tracks[0].duration_ms);
         }, 250);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrorMsg(err.response.data);
+        setIsLoading(false);
+        setIsError(true);
+      });
   };
 
   const handleGetAnother = () => {
@@ -60,18 +65,40 @@ const SongRecCard = ({ artists, genres, popularity }) => {
           </button>
         </div>
       </>
+    ) : isError ? (
+      <>
+        <div className="bg-neutral-800 h-full rounded flex flex-col items-center m-4 mt-2 justify-evenly">
+          <h1 className="text-red-600">{errorMsg}</h1>
+          <button
+            className="bg-yellow-600 hover:bg-amber-700 duration-150 text-white font-semibold py-6 rounded-full w-1/3 text-xl"
+            onClick={() => setIsError(false)}
+          >
+            Try Again
+          </button>
+        </div>
+      </>
     ) : (
       <>
         <div className="bg-neutral-800 h-full rounded flex flex-col items-center m-4 mt-2 justify-evenly">
           <div className="shadow-xl shadow-black p-4 h-3/4 rounded-xl flex flex-col justify-evenly items-center bg-neutral-900">
-            <img className="shadow-l shadow-black h-3/4" src={albumCover} />
-            <h2 className="text-white text-2xl font-semibold">{songTitle}</h2>
-            {/* <h3 className="text-white">{albumTitle}</h3> */}
-            <a href={artistUrl} target="_blank" className="text-white text-xl">
-              {artistName}
+            <div className="h-3/4">
+              <img className="shadow-l shadow-black h-full" src={albumCover} />
+            </div>
+            <a
+              href={songUrl}
+              target="_blank"
+              className="text-white text-2xl font-semibold hover:underline"
+            >
+              {songTitle}
             </a>
-            <a href={songUrl} className="text-neutral-400 underline italic ">
-              Check out on Spotify!
+
+            {/* <h3 className="text-white">{albumTitle}</h3> */}
+            <a
+              href={artistUrl}
+              target="_blank"
+              className="text-white text-xl hover:underline"
+            >
+              {artistName}
             </a>
           </div>
           <button

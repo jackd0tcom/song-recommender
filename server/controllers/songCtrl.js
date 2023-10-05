@@ -11,23 +11,27 @@ export default {
         seed_artists: [artistIds],
         seed_genres: [genres],
       })
-      .then(
-        async function (data) {
-          const newSong = await Song.create({
-            song: data.body.tracks[0].name,
-            artist: data.body.tracks[0].artists[0].name,
-            album: data.body.tracks[0].album.name,
-            albumCover: data.body.tracks[0].album.images[0].url,
-            url: data.body.tracks[0].external_urls.spotify,
-            userId,
-          });
-          let recommendations = data.body;
-          res.send(recommendations);
-        },
-        function (err) {
-          console.log(err);
-        }
-      );
+      .then(async function (data) {
+        const newSong = await Song.create({
+          song: data.body.tracks[0].name,
+          artist: data.body.tracks[0].artists[0].name,
+          album: data.body.tracks[0].album.name,
+          albumCover: data.body.tracks[0].album.images[0].url,
+          url: data.body.tracks[0].external_urls.spotify,
+          previewUrl: data.body.tracks[0].preview_url,
+          duration: data.body.tracks[0].duration_ms,
+          userId,
+        });
+        let recommendations = data.body;
+        res.send(recommendations);
+      })
+      .catch((err) => {
+        res
+          .status(400)
+          .send(
+            "Something went wrong with the Spotify API, check server or delete an artist or genre"
+          );
+      });
   },
   getAnonSong: async (req, res) => {
     console.log("getAnonSong");
@@ -64,6 +68,7 @@ export default {
         },
         function (err) {
           console.log(err);
+          res.sendStatus(400).send("restart server");
         }
       );
   },

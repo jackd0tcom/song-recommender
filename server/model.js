@@ -70,6 +70,12 @@ Song.init(
     url: {
       type: DataTypes.STRING,
     },
+    previewUrl: {
+      type: DataTypes.STRING,
+    },
+    duration: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     modelName: "song",

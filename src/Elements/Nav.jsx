@@ -29,7 +29,7 @@ const Nav = ({ clickHistory, clickHome }) => {
       <NavLink
         onClick={clickHome}
         className={
-          "text-neutral-100 basis-1/2 text-xl font-semibold hover:text-white hover:text-[1.3rem] duration-200"
+          "text-neutral-100 basis-1/2 text-xl font-semibold hover:text-white active:text-[1.3rem] duration-100"
         }
       >
         Recommend-0
@@ -42,12 +42,12 @@ const Nav = ({ clickHistory, clickHome }) => {
           >
             History
           </NavLink>
-          <NavLink
+          {/* <NavLink
             onClick={editProfile}
             className="text-neutral-300 hover:text-white transition duration-150"
           >
             Profile
-          </NavLink>
+          </NavLink> */}
           <button
             onClick={logout}
             className="bg-neutral-700 hover:bg-yellow-700 duration-150 text-white p-2 px-6 rounded-full text-l font-normal"

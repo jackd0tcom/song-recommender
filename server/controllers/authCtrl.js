@@ -178,11 +178,13 @@ export default {
               image: artist.image[0].url,
               url: artist.url,
               genres: artist.genres
-                .split(" ")
-                .map((el) => {
-                  return el.replace(el[0], el[0].toUpperCase());
-                })
-                .join(" "),
+                ? artist.genres
+                    .split(" ")
+                    .map((el) => {
+                      return el.replace(el[0], el[0].toUpperCase());
+                    })
+                    .join(" ")
+                : "",
               userId: currentUser.userId,
             });
           });

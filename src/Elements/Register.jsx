@@ -1,6 +1,7 @@
 import React from "react";
 import GenresForm from "./GenresForm";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Register = ({
   submit,
@@ -13,8 +14,14 @@ const Register = ({
   genres,
   setArtists,
   setGenres,
+  isError,
+  errorMsg,
+  setErrorMsg,
 }) => {
   const navigate = useNavigate();
+  useEffect(() => {
+    setErrorMsg(false);
+  }, []);
   return (
     <>
       <nav className="h-20 flex items-center pl-16 cursor-pointer">
@@ -56,6 +63,9 @@ const Register = ({
               Sign Up
             </button>
           </form>
+          {isError ? (
+            <p className="text-red-600 font-semibold m-0 p-0">{errorMsg}</p>
+          ) : null}
           <p className="italic text-sm -mb-6 text-gray-300">
             Already have an account?
           </p>

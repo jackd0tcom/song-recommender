@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Login = ({
   submit,
@@ -9,8 +10,15 @@ const Login = ({
   setPassword,
   username,
   password,
+  errorMsg,
+  isError,
+  setErrorMsg,
 }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setErrorMsg(false);
+  }, []);
 
   return (
     <>
@@ -51,6 +59,9 @@ const Login = ({
               Login
             </button>
           </form>
+          {isError ? (
+            <p className="text-red-600 font-semibold m-0 p-0">{errorMsg}</p>
+          ) : null}
           <p className="italic text-sm -mb-6 text-gray-300">
             Don't have an account yet?
           </p>

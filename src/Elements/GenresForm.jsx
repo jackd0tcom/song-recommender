@@ -134,11 +134,10 @@ const GenresForm = ({ genres, setGenres }) => {
         <label
           htmlFor={genre}
           key={genre + "-label"}
-          onClick={() => setIsClicked(true)}
           className={` ${
             isChecked
-              ? "text-white p-2 rounded-full bg-yellow-600 m-0.5 border transition border-neutral-900 duration-150 bg-opacity-100"
-              : "text-white p-2 rounded-full bg-opacity-30 bg-neutral-600 m-0.5 border border-neutral-900 shadow-sm shadow-black hover:bg-yellow-600 hover:cursor-pointer transition duration-150"
+              ? "text-white p-2 px-3 rounded-full bg-yellow-600 m-0.5 border transition border-neutral-900 duration-150 bg-opacity-100 cursor-pointer active:bg-yellow-700"
+              : "text-white p-2 px-3 rounded-full bg-opacity-30 bg-neutral-600 m-0.5 border border-neutral-900 shadow-sm shadow-black hover:bg-yellow-600 active:bg-yellow-700 hover:cursor-pointer transition duration-150"
           }`}
         >
           {genre}
@@ -149,7 +148,7 @@ const GenresForm = ({ genres, setGenres }) => {
   return (
     <div className="flex flex-col px-4">
       <h3 className="text-neutral-300 text-xl font-semibold mb-4 pl-4">
-        Select up to 3 Genres
+        Select up to 2 Genres:
       </h3>
       <div className="overflow-auto bg-neutral-900 shadow-inner p-1 shadow-neutral-950 h-[26rem] rounded-lg">
         {genreBoxes}

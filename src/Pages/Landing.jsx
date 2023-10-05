@@ -10,6 +10,8 @@ const Landing = () => {
   const [artists, setArtists] = useState("");
   const [genres, setGenres] = useState("");
   const [register, setRegister] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
 
   const handleFormSubmit = (e) => {
@@ -35,7 +37,8 @@ const Landing = () => {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.response.data);
+        setIsError(true);
+        setErrorMsg(err.response.data);
       });
   };
 
@@ -51,6 +54,9 @@ const Landing = () => {
       genres={genres}
       setArtists={setArtists}
       setGenres={setGenres}
+      errorMsg={errorMsg}
+      isError={isError}
+      setErrorMsg={setErrorMsg}
     />
   ) : (
     <Login
@@ -60,6 +66,9 @@ const Landing = () => {
       setPassword={setPassword}
       username={username}
       password={password}
+      errorMsg={errorMsg}
+      isError={isError}
+      setErrorMsg={setErrorMsg}
     />
   );
 };
