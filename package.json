@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server/index.js -w server/index.js -w src",
+    "initdb": "dropdb --if-exists users && createdb users",
+    "seed" : "node server/model.js",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
